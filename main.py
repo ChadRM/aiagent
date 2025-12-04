@@ -13,9 +13,13 @@ client = genai.Client(api_key=api_key)
 
 parser = argparse.ArgumentParser(description="Chadbot")
 parser.add_argument("user_prompt", type=str, help="User prompt")
+parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
 args = parser.parse_args()
 
 user_prompt = args.user_prompt
+verbose = args.verbose
+
+
 messages = [types.Content(role="user", parts=[types.Part(text=args.user_prompt)])]
 # response = client.models.generate_content(model="gemini-2.5-flash",contents=prompt)
 response = client.models.generate_content(
@@ -28,9 +32,10 @@ if response.usage_metadata != None:
 else:
     raise RuntimeError("usage_metadata doesn't exist")
 
-print(f"User prompt: {user_prompt}")
-print(f"Prompt tokens: {ptc}")
-print(f"Response tokens: {ctc}")
+if verbose:
+    print(f"User prompt: {user_prompt}")
+    print(f"Prompt tokens: {ptc}")
+    print(f"Response tokens: {ctc}")
 print("Response:")
 print(response.text)
 
