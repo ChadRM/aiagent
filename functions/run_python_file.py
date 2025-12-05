@@ -13,11 +13,18 @@ def run_python_file(working_directory, file_path, args=[]):
                 output = subprocess.run(['python3',abs_file_path] + args,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE, 
-                    timeout=30)
-                if (output.stdout is None) and (output.stderr is None) and (output.returncode == 0):
+                    timeout=30,
+                    cwd=abs_path)
+                stdout_text = output.stdout.decode() if output.stdout else ""
+                stderr_text = output.stderr.decode() if output.stderr else ""
+
+                if not stdout_text and not stderr_text and output.returncode == 0:
                     return "No output produced"
-                output_text = f"STDOUT: {output.stdout.decode() if output.stdout else f'No STDOUT'}\n"
-                output_text += f"STDERR: {output.stderr.decode() if output.stderr else f'No STDERR'}"
+
+                output_text = f"STDOUT: {stdout_text}"
+                output_text += f"STDERR: {stderr_text}"
+                # output_text = f"STDOUT: {output.stdout.decode() if output.stdout else f'No STDOUT'}\n"
+                # output_text += f"STDERR: {output.stderr.decode() if output.stderr else f'No STDERR'}"
                 if output.returncode != 0:
                     output_text += f"Process exited with code {output.returncode}"
                 return output_text
