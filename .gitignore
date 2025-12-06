@@ -3,3 +3,4 @@ uv.lock
 *.pyc
 lorem.txt
 morelorem.txt
+/functions/__pycache__/*.pyc
