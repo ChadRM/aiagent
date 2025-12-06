@@ -1,6 +1,7 @@
 from config import BYTE_LIMIT
 import os
 import subprocess
+from google.genai import types
 
 def run_python_file(working_directory, file_path, args=[]):
     abs_path = os.path.abspath(working_directory)
@@ -34,3 +35,26 @@ def run_python_file(working_directory, file_path, args=[]):
             return f'Error: File "{file_path}" not found.'
     else:
         return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
+
+
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description="Runs files in the specified directory, constrained to the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="This is the file to run.",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                description="These are the arguments passed into the file to run.",
+                items=types.Schema(
+                    type=types.Type.STRING,
+                    description="An argument to pass to the Python file."
+                )
+            )
+        }
+    )
+)

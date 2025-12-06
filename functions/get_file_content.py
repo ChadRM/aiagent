@@ -1,12 +1,11 @@
 from config import BYTE_LIMIT
 import os
+from google.genai import types
 
 numbytes = int(BYTE_LIMIT)
 def get_file_content(working_directory, file_path):
     abs_path = os.path.abspath(working_directory)
     abs_file_path = os.path.abspath(os.path.join(abs_path,file_path))
-    # print(abs_path)
-    # print(abs_file_path)
     if abs_file_path.startswith(abs_path):
         if os.path.isfile(abs_file_path):
             output = ""
@@ -23,3 +22,18 @@ def get_file_content(working_directory, file_path):
             return f'Error: File not found or is not a regular file: "{file_path}"'
     else:
         return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
+
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description="Reads the content of a given file.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path":types.Schema(
+                type=types.Type.STRING,
+                description="This is the file to get the content out of.",
+            ),
+        }
+    )
+
+)

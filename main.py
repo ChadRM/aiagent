@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from prompts import system_prompt
-from functions.get_files_info import schema_get_files_info
+from call_function import available_functions
 
 
 model_name = "gemini-2.5-flash"
@@ -19,9 +19,6 @@ args = parser.parse_args()
 user_prompt = args.user_prompt
 verbose = args.verbose
 messages = [types.Content(role="user", parts=[types.Part(text=args.user_prompt)])]
-available_functions = types.Tool(
-    function_declarations=[schema_get_files_info],
-)
 response = client.models.generate_content(
     model=model_name,
     contents=messages,

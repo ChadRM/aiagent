@@ -1,4 +1,5 @@
 import os
+from google.genai import types
 
 def write_file(working_directory, file_path, content):
     abs_path = os.path.abspath(working_directory)
@@ -17,3 +18,22 @@ def write_file(working_directory, file_path, content):
 
     else:
         return f'Error: Cannot write to "{file_path}" as it is outside the permitted working directory'
+
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Writes content to a given file",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="This is the file path of the file to write.",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="This is the content to write to the file."
+            )
+
+        }
+    )
+)
