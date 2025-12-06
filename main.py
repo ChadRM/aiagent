@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from prompts import system_prompt
-from call_function import available_functions
+from call_function import available_functions, call_function
 
 
 model_name = "gemini-2.5-flash"
@@ -36,6 +36,14 @@ if verbose:
     print(f"Response tokens: {ctc}")
 print("Response:")
 print(response.text)
+return_values = []
 if response.function_calls != None:
     for item in response.function_calls:
-       print(f"Calling function: {item.name}({item.args})")
+        result = call_function(item,verbose=True)
+        if verbose:
+            print(f"-> {result.parts[0].function_response.response}")
+        if result.parts[0].function_response.response is None:
+            raise Exception("Fatal")
+        else:
+            return_values.append(result.parts[0])
+    
