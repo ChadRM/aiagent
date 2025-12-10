@@ -1,6 +1,7 @@
 import os
 import argparse
 from dotenv import load_dotenv
+import time
 from google import genai
 from google.genai import types
 from prompts import system_prompt
@@ -37,6 +38,9 @@ def main():
                 print(final_text)
                 break
         except Exception as e:
+            if "503 UNAVAILABLE" in str(e):
+                time.sleep(5)
+                continue
             if verbose:
                 print(f"Error in generate_content: {e}")
             break
