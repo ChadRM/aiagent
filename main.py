@@ -86,31 +86,7 @@ def generate_content(client,messages,verbose):
 
     messages.append(types.Content(role="user", parts=function_responses))
     return None
-    
-    
-    # model_wants_tools = bool(response.function_calls)
-   
-    # print("Response:")
-    # print(response.text)
-    # tool_parts = []
-    # if model_wants_tools:
-    #     for item in response.function_calls:
-    #         result = call_function(item,verbose=verbose)
-    #         if verbose:
-    #             print(f"-> {result.parts[0].function_response.response}")
-    #         if result.parts[0].function_response.response is None:
-    #             raise Exception("Fatal")
-    #         else:
-    #             tool_parts.append(result.parts[0])
-    #     if tool_parts:
-    #         tool_content = types.Content(
-    #             role="user",
-    #             parts=tool_parts,
-    #         )
-    #         messages.append(tool_content)
-    # else:
-    #     return response.text
-    # return None
+
 
 if __name__ == "__main__":
     main()
